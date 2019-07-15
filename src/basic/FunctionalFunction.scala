@@ -1,5 +1,8 @@
 package basic
 
+/**
+  * 第二三章的练习题
+  */
 object FunctionalFunction {
 
   def main(args : Array[String]) : Unit = {
@@ -17,6 +20,9 @@ object FunctionalFunction {
 
     println(abstractFunc(9, absFunc))
     println(abstractFunc(9, sqrtFunc))
+
+    val l1 = List(1 to 5)
+    println("dropWhile: " + dropWhile(l1, (a: Int) => a < 3))
   }
 
   def setHead[A](h: A, l: List[A]) : List[A] = l match {
@@ -66,6 +72,7 @@ object FunctionalFunction {
 
   /**
     * 删除最后一个元素
+    *   这个方法无法做到常量级开销, 因为这个单向链表的删除一定会遍历整个列表, 哪怕只是删除最后一个元素.
     *
     * @param l    list
     * @tparam A   泛型
@@ -84,4 +91,21 @@ object FunctionalFunction {
     def apply(n1: Int, n2: Int): Boolean = n1 < n2
   }
   c.apply(8, 9)
+
+
+  /**
+    * 删除符合判定的元素
+    *
+    * @param list 列表
+    * @param f    判定函数
+    * @tparam A   泛型
+    * @return     删除后的结果
+    */
+  def dropWhile[A](list: List[A], f: A => Boolean) : List[A] = list match {
+//    case Nil => System.err("错误")
+    case Cons(head, tail) if f(head) => dropWhile(tail, f)
+    case Cons(_, Nil) => list
+  }
+
+
 }
